@@ -1,52 +1,45 @@
 # RemindersBar
 
-A macOS menu bar app for Apple Reminders, organized the way a todo system
-should be: **Todo** (scheduled, actionable), **Backlog** (someday), and
-**Cycles** (recurring). Completed items disappear into Reminders' built-in
-history.
+macOS menu bar app for Apple Reminders. Reminders are organized into three
+lists: `Todo` (has a due date), `Backlog` (no date), and `Cycles` (recurring).
+Data lives in Apple Reminders via EventKit, so everything syncs with iOS,
+Siri, etc.
 
-Everything syncs through Apple Reminders (EventKit), so your phone, watch, and
-Siri all stay in the loop.
+## Usage
 
-## Features
+Click the menu bar icon to open a popover with a search field and your
+incomplete reminders grouped by date (Overdue / Today / Tomorrow / Later).
+Backlog is a collapsed section at the bottom.
 
-- **One popover, one keystroke away** — click the menu bar icon, and the
-  search field is already focused
-- **Search or add** — typing filters your reminders; press ⏎ to add what you
-  typed instead
-- **Natural-language dates** — `submit invoices friday 10am`, `call mom
-  tomorrow` (a time sets an alarm; a bare date is just a due date)
-- **Recurrence** — `water plants every 3 days`, `gym every monday`, `review
-  subscriptions monthly` → lands in Cycles with a real repeat rule; checking
-  it off rolls it to the next occurrence
-- **Smart routing** — dated → Todo, undated → Backlog, recurring → Cycles
-- **Date-grouped view** — Overdue / Today / Tomorrow / Later, with Backlog
-  collapsed at the bottom
-- **Row actions** — click the circle to complete; hover for move/delete;
-  right-click for move, rename, delete; double-click a title to rename inline
-- Launch at login, no Dock icon, live sync when reminders change elsewhere
+Typing in the field filters reminders. Pressing ⏎ adds what you typed:
+
+- `submit invoices friday 10am` — due Friday, with a 10am alarm → Todo
+- `call mom tomorrow` — date-only due date → Todo
+- `get a library card` — no date → Backlog
+- `water plants every 3 days`, `gym every monday`, `rent monthly` —
+  recurring → Cycles. Completing one advances it to the next occurrence.
+
+Row actions: click the circle to complete, hover or right-click to move
+between lists or delete, double-click a title (or right-click → Rename) to
+rename.
+
+The `Todo`/`Backlog`/`Cycles` lists are created on demand. Other lists still
+appear in the date view; only `Backlog` is treated specially. In-list sections
+would have been preferable to separate lists, but EventKit has no API for
+them.
 
 ## Install
 
-Requires macOS 14+ and Xcode Command Line Tools (no Xcode needed — builds
-with plain `swiftc`, zero dependencies).
+Needs macOS 14+ and the Xcode Command Line Tools (`swiftc`; no Xcode or
+package manager involved).
 
 ```sh
 ./build.sh --install
 open /Applications/RemindersBar.app
 ```
 
-macOS will ask for Reminders access on first launch.
-
-The app expects lists named `Todo`, `Backlog`, and `Cycles`; it creates them
-on demand as you add or move reminders. Your other lists still show up in the
-date-grouped view — only `Backlog` is treated specially.
-
-## Why lists instead of sections?
-
-Reminders' in-list sections aren't exposed to third-party apps (EventKit has
-no API for them), so top-level lists are the sturdiest structure that syncs
-everywhere.
+macOS asks for Reminders access on first launch. Note that rebuilding
+re-signs the app ad hoc, which makes macOS ask again.
 
 ## License
 
