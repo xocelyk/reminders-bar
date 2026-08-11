@@ -1,8 +1,9 @@
 import EventKit
 import ServiceManagement
 import SwiftUI
+// Case order is display order: dated-soon first, then undated, then far-out.
 enum DueGroup: Int, CaseIterable, Identifiable {
-    case overdue, today, tomorrow, later, noDate
+    case overdue, today, tomorrow, thisWeek, noDate, later
 
     var id: Int { rawValue }
 
@@ -11,8 +12,9 @@ enum DueGroup: Int, CaseIterable, Identifiable {
         case .overdue: return "OVERDUE"
         case .today: return "TODAY"
         case .tomorrow: return "TOMORROW"
-        case .later: return "LATER"
+        case .thisWeek: return "THIS WEEK"
         case .noDate: return "NO DATE"
+        case .later: return "LATER"
         }
     }
 }
@@ -305,6 +307,11 @@ extension EKReminder {
         }
         if due < Date() { return .overdue }
         if calendar.isDateInTomorrow(due) { return .tomorrow }
+        if let days = calendar.dateComponents(
+            [.day], from: calendar.startOfDay(for: Date()), to: calendar.startOfDay(for: due)
+        ).day, days <= 7 {
+            return .thisWeek
+        }
         return .later
     }
 
