@@ -257,9 +257,9 @@ final class RemindersStore: ObservableObject {
             }
         }
 
-        // Recurring reminders live in Cycles; dated one-offs in Todo, undated in Backlog.
-        let listName =
-            recurrence != nil ? "Cycles" : reminder.dueDateComponents != nil ? "Todo" : "Backlog"
+        // Recurring reminders live in Cycles; everything else defaults to Todo.
+        // Backlog is only ever entered by an explicit move.
+        let listName = recurrence != nil ? "Cycles" : "Todo"
         reminder.calendar =
             calendarNamed(listName, createIfNeeded: true)
             ?? store.defaultCalendarForNewReminders()

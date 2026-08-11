@@ -15,9 +15,11 @@ Typing in the field filters reminders. Pressing ⏎ adds what you typed:
 
 - `submit invoices friday 10am` — due Friday, with a 10am alarm → Todo
 - `call mom tomorrow` — date-only due date → Todo
-- `get a library card` — no date → Backlog
+- `get a library card` — no date → Todo (undated)
 - `water plants every 3 days`, `gym every monday`, `rent monthly` —
   recurring → Cycles. Completing one advances it to the next occurrence.
+
+Reminders only reach Backlog when you move them there.
 
 Row actions: click the circle to complete, hover or right-click to move
 between lists or delete, double-click a title (or right-click → Rename) to
